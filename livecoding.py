@@ -29,11 +29,11 @@ def elementos():
                     if elemento["id"] not in [i["id"] for i in elementos]:
                         elementos.append(elemento)
 
-    #pequeño check que printea si hay o no hay ids repetidos
+    #pequeño check que printea en consola si hay o no hay ids repetidos y la cantidad de ids
     if len([i["id"] for i in elementos])== len(set([i["id"] for i in elementos])):
-        print("no hay ids repetidas")
+        print("no hay ids repetidas " + str(len(set([i["id"] for i in elementos]))))
     else:
-        print("hay ids repetidos")
+        print("hay ids repetidos " + str(len(set([i["id"] for i in elementos]))))
 
     return jsonify(response=list(elementos))
 
