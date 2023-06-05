@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 import grequests
 import time
+import requests
 from gevent import monkey
 monkey.patch_all()
 app = Flask(__name__)
@@ -24,7 +25,7 @@ def elementos():
             joke_id = elemento['id']
             while joke_id in joke_ids:
                 #si el ID ya existe, volvemos a realizar la solicitud
-                response = grequests.get('https://api.chucknorris.io/jokes/random').send()
+                response = requests.get('https://api.chucknorris.io/jokes/random')
                 if response is not None and response.status_code == 200:
                     elemento = response.json()
                     joke_id = elemento['id']
