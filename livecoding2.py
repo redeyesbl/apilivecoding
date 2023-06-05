@@ -19,16 +19,22 @@ def elementos():
     #enviar las solicitudes de manera asíncrona
     responses = grequests.map(rs)
     
+    def getdid(jokeids):
+        response = requests.get('https://api.chucknorris.io/jokes/random')
+        if response is not None and response.status_code == 200:
+            if response.json()['id'] not in jokeids:
+                return response.json()
+        else:
+            return getdid(jokeids)
+
+
     for response in responses:
         if response is not None and response.status_code == 200:
             elemento = response.json()
             joke_id = elemento['id']
-            while joke_id in joke_ids:
-                #si el ID ya existe, volvemos a realizar la solicitud
-                response = requests.get('https://api.chucknorris.io/jokes/random')
-                if response is not None and response.status_code == 200:
-                    elemento = response.json()
-                    joke_id = elemento['id']
+            if joke_id in joke_ids:
+                elemento=getdid(joke_ids)
+                joke_id= elemento['id']
             
             joke_ids.add(joke_id)
             elementos.append(elemento)
