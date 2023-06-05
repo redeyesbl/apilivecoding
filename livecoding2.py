@@ -1,6 +1,8 @@
 from flask import Flask, jsonify
 import grequests
 import time
+from gevent import monkey
+monkey.patch_all()
 app = Flask(__name__)
 
 @app.route('/')
