@@ -1,12 +1,15 @@
 from flask import Flask, jsonify
 import requests
 import concurrent.futures
+import time
 
 app = Flask(__name__)
 
 @app.route("/")
 def elementos():
     elementos =[]
+    
+    inicio = time.time()
 
     def obtener_elemento():
         response = requests.get("https://api.chucknorris.io/jokes/random")
@@ -16,6 +19,7 @@ def elementos():
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
         while len(elementos) < 25:
+            print("doing requests")
             # Crear una lista de para realizar los requests 
             tasks = [executor.submit(obtener_elemento) for _ in range(25 - len(elementos))]
 
@@ -35,6 +39,11 @@ def elementos():
     else:
         print("hay ids repetidos " + str(len(set([i["id"] for i in elementos]))))
 
+    fin = time.time()
+
+    
+    tiempo_total = fin - inicio
+    print(tiempo_total)
     return jsonify(response=list(elementos))
 
 if __name__ == '__main__':
