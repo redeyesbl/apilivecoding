@@ -24,6 +24,8 @@ def elementos():
         if response is not None and response.status_code == 200:
             if response.json()['id'] not in jokeids:
                 return response.json()
+            else:
+                return getdid(jokeids)
         else:
             return getdid(jokeids)
 
